@@ -1,8 +1,7 @@
 services:
   docusaurus:
-    container_name: docusaurus
-    build:
-      context: .
+    container_name: docusaurus-ssh
+    image: pmalys/docusaurus-ssh
       args:
         - ROOT_PASSWORD=root
     volumes:

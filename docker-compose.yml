@@ -1,0 +1,14 @@
+services:
+  docusaurus:
+    container_name: docusaurus
+    build:
+      context: .
+      args:
+        - ROOT_PASSWORD=root
+    volumes:
+      - docusaurus_home:/home
+    ports:
+      - 3000:3000
+      - 22:22
+volumes:
+  docusaurus_home:

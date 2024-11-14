@@ -25,9 +25,10 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg ROOT_PASSWORD=root \  # You can set build arguments here
+            --build-arg ROOT_PASSWORD=root \ 
             -t ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh:latest \
             .
+
 
       # Step 4: Push the Docker image to Docker Hub
       - name: Push Docker image

@@ -30,17 +30,15 @@ Requirements:
 ```yml
 services:
   docusaurus:
-    container_name: docusaurus-ssh
+    container_name: docusaurus
     image: pmalys/docusaurus-ssh
-      args:
-        - ROOT_PASSWORD=root
+    environment:
+      ROOT_PASSWORD: root
     volumes:
       - docusaurus_home:/home
-    ports:
-      - 3000:3000
-      - 22:22
 volumes:
-  docusaurus_home:
+  docusaurus_home: null
+
 ```
 - (optional) change your password in `args:` for example `ROOT_PASSWORD=your_password`
 - run with `docker compose up -d`

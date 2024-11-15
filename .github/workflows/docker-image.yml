@@ -3,45 +3,29 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master
+      - master  # Change to the branch you want to trigger builds on
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Docker Hub: Login, Build, Push
+      # Step 2: Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image for Docker Hub
+      # Step 3: Build the Docker image
+      - name: Build Docker image
         run: |
-          docker build --build-arg ROOT_PASSWORD=root \
-            -t ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh:latest \
-            -t ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh:${{ github.sha }} .
-
-      - name: Push Docker image to Docker Hub
+          docker build --build-arg ROOT_PASSWORD=root -t ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh .
+      # Step 4: Push the Docker image to Docker Hub
+      - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh:${{ github.sha }}
-
-      # GitHub Container Registry: Login, Build, Push
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Build Docker image for GitHub Container Registry
-        run: |
-          docker build --build-arg ROOT_PASSWORD=root \
-            -t ghcr.io/${{ github.repository_owner }}/docusaurus-ssh:latest \
-            -t ghcr.io/${{ github.repository_owner }}/docusaurus-ssh:${{ github.sha }} .
-
-      - name: Push Docker image to GitHub Container Registry
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/docusaurus-ssh:latest
-          docker push ghcr.io/${{ github.repository_owner }}/docusaurus-ssh:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/docusaurus-ssh
